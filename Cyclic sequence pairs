@@ -1,0 +1,115 @@
+#include<iostream>
+using namespace std;
+
+#define Maxsize 101
+
+typedef struct
+{
+    int *base;
+    int fron;
+    int rear;
+} SqQueue;
+
+void initSqQueue(SqQueue &q)
+{
+    q.base=new int [Maxsize];
+    q.fron=q.rear=0;
+}
+
+SqQueue EnSqQueue(SqQueue &q,int e)
+{
+    if((q.rear+1)%Maxsize==q.fron)
+    {
+        cout<<"ERROR,"<<e<<"入队失败！"<<endl;
+        return q;
+    }
+    q.base[q.rear]=e;
+    q.rear=(q.rear+1)%Maxsize;
+    cout<<"元素："<<e<<" 入队成功"<<endl;
+    return q;
+}
+
+SqQueue DeSqQueue(SqQueue &q,int &e)
+{
+    if(q.rear==q.fron)
+    {
+        cout<<"ERROR,"<<e<<"出队失败！"<<endl;
+        return q;
+    }
+    e=q.base[q.fron];
+    q.fron=(q.fron+1)%Maxsize;
+    cout<<"元素："<<e<<" 出队成功"<<endl;
+    return q;
+}
+
+void ShowSqQueue(SqQueue &q)
+{
+    SqQueue p;
+    p.base=new int [Maxsize];
+    p=q;
+    p.fron=q.fron;
+    p.rear=q.rear;
+    while(true)
+    {
+        if(q.rear==q.fron)
+            break;
+        cout<<q.base[q.fron]<<endl;
+        q.fron=(q.fron+1)%Maxsize;
+    }
+    q=p;
+    q.fron=p.fron;
+    q.rear=p.rear;
+    //for(int j=q.fron;j<q.rear;j++)
+       // cout<<q.base[j]<<endl;
+}
+
+bool EnSqQueue(SqQueue &q,char e)
+{
+    if((q.rear+1)%Maxsize==q.fron)
+    {
+        cout<<"ERROR";
+        return false;
+    }
+    q.base[q.rear]=e;
+    q.rear=(q.rear+1)%Maxsize;
+    return true;
+}
+
+bool SqQueueIsEmpty(SqQueue &q)
+{
+     if(q.rear+1==q.fron)
+        return false;
+     return true;
+}
+
+int main()
+{
+    SqQueue q;
+    initSqQueue(q);
+    int temp;
+    cout<<"循环队入队："<<endl;
+    for(int i=0; i<10; i++)
+    {
+        //cout<<"请输入入栈元素："<<endl;
+        //cin>>temp;
+       // EnSqQueue(q,temp);
+        EnSqQueue(q,i);
+    }
+
+    cout<<endl;
+    cout<<"队中元素:"<<endl;
+    ShowSqQueue(q);
+
+    cout<<endl;
+    cout<<"循环队出队："<<endl;
+    for(int i=0; i<10; i++)
+    {
+        int e;
+        DeSqQueue(q,e);
+    }
+    cout<<endl;
+    cout<<"循环队一部分元素出队后："<<endl;
+    ShowSqQueue(q);
+    cout<<endl;
+    return 0;
+    }

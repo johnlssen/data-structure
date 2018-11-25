@@ -1,0 +1,93 @@
+#include<iostream>
+#include<windows.h>
+using namespace std;
+
+#define SqStackMaxSize 100
+
+typedef struct
+{
+    int *base;
+    int *top;
+    int SqStacksize;
+} SqStack;
+
+typedef struct SqStackNode
+{
+    int data;
+    struct SqStackNode *next;
+} Stack,*ListStack;
+
+void CreadSqStack(SqStack &s)
+{
+    s.base=new int [SqStackMaxSize];
+    s.top=s.base;
+}
+
+SqStack Push(SqStack &s,int e)
+{
+    if(s.top-s.base==s.SqStacksize)
+    {
+        cout<<"ERROR!"<<endl;
+        return s;
+    }
+    *s.top++=e;
+    return s;
+}
+
+SqStack Pop(SqStack &s,int &e)
+{
+    if(s.top==s.base)
+    {
+        cout<<"ERROR"<<endl;
+        return s;
+    }
+    e=*--s.top;
+    return s;
+}
+
+int GetTop(SqStack &s)
+{
+    if(s.top!=s.base)
+        return *(s.top-1);
+    else
+        return -1;
+}
+
+void ShowSqStack(SqStack &s)
+{
+    SqStack q;
+    q.base=new int[SqStackMaxSize];
+    q.base=s.base;
+    q.top=s.top;
+    while(true)
+    {
+        if(s.top==s.base)
+            break;
+        cout<<*(s.top-1)<<endl;
+        s.top=s.top-1;
+    }
+    s.base=q.base;
+    s.top=q.top;
+}
+
+int main()
+{
+    SqStack s;
+    CreadSqStack(s);
+    int temp;
+    cout<<"顺序栈入栈"<<endl;
+    for(int i=0; i<10; i++)
+    {
+        //cin>>temp;
+        Push(s,i);
+    }
+    cout<<"顺序栈中的元素:"<<endl;
+    ShowSqStack(s);
+
+    for(int i=10; i>=1; i--)
+    {
+        Pop(s,i);
+    }
+    cout<<GetTop(s)<<endl;
+    return 0;
+}
